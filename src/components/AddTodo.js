@@ -12,10 +12,12 @@ const AddTodo = (props) => {
 
     const handleSaveIcon = () => {
         props.handleSaveTodo(editedText);
+        setEditedText("");
     }
 
     const handleDiscardIcon = () => {
-        // setIsEditingEnabled(true);
+        props.handleDiscardTodo();
+        setEditedText("");
     }
 
     return (

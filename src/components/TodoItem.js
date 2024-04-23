@@ -1,32 +1,36 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Button from "./Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPenToSquare, faSquareCheck } from "@fortawesome/free-solid-svg-icons";
+import { faPenToSquare, faSquareCheck, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 const TodoItem = (props) => {
 
-    let buttonText;
-    let buttonClass;
+    // const IN_PROGRESS = "in-progress";
 
-    if(props.status === 0) {
-        buttonText = "Todo";
-        buttonClass = "status-todo";
-    } else if (props.status === 1) {
-        buttonText = "In Progress";
-        buttonClass = "status-in-progress";
-    } else if(props.status === 2) {
-        buttonText = "Done";
-        buttonClass = "status-done";
-    } else {
-        console.warn("Invalid Status: " + props.status);
-    }
+    const [buttonText, setButtonText] = useState(() => {
+        switch(props.status) {
+            case 0: 
+                return "To-Do";
+            case 1:
+                return "In-Progress";
+            case 2: 
+                return "Done";
+            default:
+                console.lof("Error: Unknow Status")
+                return "";
+        }
+    })
 
+    const [buttonClass, setButtonClass] = useState(() => {
+        return `status-${buttonText.toLowerCase()}`;
+    })
+
+    const [status, setStatus] = useState(props.status)
     const [editedText, setEditedText] = useState(props.title);
     const [isEditingEnabled, setIsEditingEnabled] = useState(false);
 
     const handleInputChange = (event) => {
         setEditedText(event.target.value);
-        console.log(editedText);
     }
 
     const handleSaveIcon = () => {
@@ -36,6 +40,34 @@ const TodoItem = (props) => {
     const handleEditIcon = () => {
         setIsEditingEnabled(true);
     }
+
+    const handleStatusChange = () => {
+        const newStatus = (status + 1) % 3;
+        setStatus(newStatus);
+    }
+
+    const handleDeleteIcon = () => {
+        props.onDeleteTodo(props.id);
+    }
+
+    useEffect(() => {
+        switch(status) {
+            case 0: 
+                setButtonClass("status-to-do");
+                setButtonText("To-Do");
+                break;
+            case 1:
+                setButtonClass("status-in-progress");
+                setButtonText("In-Progress");
+                break;
+            case 2:
+                setButtonClass("status-done");
+                setButtonText("Done");
+                break;
+            default:
+                console.error("Unknow Status: " + status);
+        } 
+    }, [status]);
 
     return (
         <>
@@ -53,8 +85,8 @@ const TodoItem = (props) => {
                     ) : (
                         <FontAwesomeIcon className="todo-item-action-icon" icon={faPenToSquare} onClick={handleEditIcon} />
                     )}
-                    
-                    <Button classname={buttonClass} text={buttonText}></Button>
+                    <FontAwesomeIcon className="todo-item-action-icon" icon={faTrash} onClick={handleDeleteIcon}></FontAwesomeIcon>
+                    <button onClick={handleStatusChange} className={buttonClass}>{buttonText}</button>
                 </span>
             </li>
         </>

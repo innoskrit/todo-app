@@ -46,7 +46,7 @@ body {
     outline: none;
 }
 
-.status-todo {
+.status-to-do {
     width: 100px;
     background-color: red;
     color: white;
@@ -82,4 +82,5 @@ body {
 .todo-item-action-icon {
     margin-right: 10px;
     font-size: 24px;
+    cursor: pointer;
 }

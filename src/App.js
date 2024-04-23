@@ -16,18 +16,18 @@ function App() {
     DONE: 2,
   })
 
-  const todoList = {
+  const TodoList = {
     1 : {
       title: "Wake Up",
-      status: Status.DONE,
+      status: Status.TODO,
     },
     2 : {
       title: "Exercise",
-      status: Status.DONE,
+      status: Status.TODO,
     },
     3 : {
       title: "Breakfast",
-      status: Status.IN_PROGRESS,
+      status: Status.TODO,
     },
     4 : {
       title: "Go to Office",
@@ -39,6 +39,8 @@ function App() {
     }
   }
 
+  const [todoList, setTodoList] = useState(TodoList);
+
   const [isAddTodoEnabled, setIsAddTodoEnabled] = useState(false);
 
   const handleAddTodoItem = () => {
@@ -46,12 +48,28 @@ function App() {
   }
 
   const saveTodo = (todoTitle) => {
+    let id;
+    if(Object.keys(todoList).length > 0) {
+      id = Math.max(...Object.keys(todoList)) + 1;
+    } else {
+      id = 1;
+    }
     const newTodo = {
       title: todoTitle,
       status: Status.TODO,
     }
-    todoList[6] = newTodo;
-    console.log(todoList);
+    setTodoList((prevTodoList) => ({...prevTodoList, [id]: newTodo}))
+    setIsAddTodoEnabled(false);
+  }
+
+  const discardTodo = () => {
+    setIsAddTodoEnabled(false);
+  }
+
+  const onDeleteTodo = (id) => {
+    const updatedList = {...todoList};
+    delete updatedList[id];
+    setTodoList(updatedList);
   }
 
   return (
@@ -59,9 +77,9 @@ function App() {
       <div className='container'>
         <TodoHeader text="Todo App"></TodoHeader>
         {Object.entries(todoList).map(([id, todo]) => (
-          <TodoItem status={todo.status} title={todo.title}></TodoItem>
+          <TodoItem onDeleteTodo={onDeleteTodo} status={todo.status} title={todo.title} id={id}></TodoItem>
         ))}
-        <AddTodo isAddTodoEnabled={isAddTodoEnabled} handleSaveTodo={saveTodo}></AddTodo>
+        <AddTodo isAddTodoEnabled={isAddTodoEnabled} handleSaveTodo={saveTodo}  handleDiscardTodo={discardTodo}></AddTodo>
         <button className="todo-button" onClick={handleAddTodoItem}>Add Item</button>
       </div>
    </>
