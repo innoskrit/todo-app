@@ -1,11 +1,9 @@
 import { faSquareCheck, faSquareMinus } from '@fortawesome/free-solid-svg-icons';
 import './App.css';
-import Button from './components/Button';
 import TodoHeader from './components/TodoHeader';
 import TodoItem from './components/TodoItem';
 import './style.css';
 import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AddTodo from './components/AddTodo';
 
 function App() {
