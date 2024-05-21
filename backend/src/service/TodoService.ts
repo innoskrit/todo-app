@@ -1,14 +1,14 @@
-import e from "express";
 import { Todo } from "../model/Todo";
 import { TodoStatus } from "../model/TodoStatus";
-import TodoRepository from "../respository/TodoRepository";
 import { uuid } from 'uuidv4';
+import TodoInMemoryRepository from "../respository/TodoInMemoryRepository";
+import TodoRepositoryInterface from "../respository/TodoRepositoryInterface";
 
 class TodoService {
 
-    private readonly todoRepository: TodoRepository;
+    private readonly todoRepository: TodoRepositoryInterface;
 
-    public constructor(todoRepository: TodoRepository) { 
+    public constructor(todoRepository: TodoRepositoryInterface) { 
         this.todoRepository = todoRepository;
     }
 

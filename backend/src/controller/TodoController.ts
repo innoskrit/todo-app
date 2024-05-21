@@ -1,14 +1,18 @@
 import express from 'express';
-import TodoRepository from '../respository/TodoRepository';
 import TodoService from '../service/TodoService';
+import TodoInMemoryRepository from '../respository/TodoInMemoryRepository';
+import TodoDBRepository from '../respository/TodoDBRepository';
 
-const todoService = new TodoService(new TodoRepository());
+const todoService = new TodoService(new TodoInMemoryRepository());
 
 export const createTodo = (req: express.Request, res: express.Response) => {
     if(req.body.name === "") {
         res.status(400).json({error: "Name cannot be empty."});
     }
     const todo = todoService.createTodo(req.body);
+    if(todo === undefined || todo === null) {
+        res.status(500).json({message: "Todo couldn't be created.", data: null});
+    }
     res.status(200).json({message: "Todo created successfully.", data: todo});
 }
 
