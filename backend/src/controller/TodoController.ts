@@ -1,9 +1,8 @@
 import express from 'express';
 import TodoService from '../service/TodoService';
-import TodoInMemoryRepository from '../respository/TodoInMemoryRepository';
 import TodoDBRepository from '../respository/TodoDBRepository';
 
-const todoService = new TodoService(new TodoInMemoryRepository());
+const todoService = new TodoService(new TodoDBRepository());
 
 export const createTodo = (req: express.Request, res: express.Response) => {
     if(req.body.name === "") {
@@ -16,17 +15,17 @@ export const createTodo = (req: express.Request, res: express.Response) => {
     res.status(200).json({message: "Todo created successfully.", data: todo});
 }
 
-export const getTodos = (req: express.Request, res: express.Response) => {
-    const todos = todoService.getTodos();
+export const getTodos = async (req: express.Request, res: express.Response) => {
+    const todos = await todoService.getTodos();
     if(todos.length === 0) {
         res.status(404).json({message: "No Todos found."});
     }
     res.status(200).json({message: "Todos fetched successfully.", data: todos});
 }
 
-export const getTodo = (req: express.Request, res: express.Response) => {
+export const getTodo = async (req: express.Request, res: express.Response) => {
     const todoId = req.params["id"];
-    const todo = todoService.getTodo(todoId);
+    const todo = await todoService.getTodo(todoId);
     if(todo === null) {
         res.status(404).json({error: "No Todo found"});
     }

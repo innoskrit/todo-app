@@ -1,7 +1,6 @@
 import { Todo } from "../model/Todo";
 import { TodoStatus } from "../model/TodoStatus";
 import { uuid } from 'uuidv4';
-import TodoInMemoryRepository from "../respository/TodoInMemoryRepository";
 import TodoRepositoryInterface from "../respository/TodoRepositoryInterface";
 
 class TodoService {
@@ -18,12 +17,12 @@ class TodoService {
         return this.todoRepository.createTodo(todo);
     }
 
-    public getTodos(): Todo[] {
-        return this.todoRepository.getTodos();
+    async getTodos(): Promise<Todo[]> {
+        return await this.todoRepository.getTodos();
     }
 
-    public getTodo(todoId: string): Todo | null {
-        return this.todoRepository.getTodo(todoId);
+    async getTodo(todoId: string): Promise<Todo> {
+        return await this.todoRepository.getTodo(todoId);
     }
 
     public updateTodo(todoId: string, todo: Todo): Todo | null {

@@ -1,7 +1,7 @@
 import { Todo } from "../model/Todo";
 import TodoRepositoryInterface from "./TodoRepositoryInterface";
 
-class TodoInMemoryRepository implements TodoRepositoryInterface {
+class TodoInMemoryRepository {
 
     private todoList: Todo[];
 
