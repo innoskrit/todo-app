@@ -30,7 +30,7 @@ class TodoInMemoryRepository {
     public updateTodo(todoId: string, todo: Todo): Todo | null {
         for(let i = 0; i < this.todoList.length; i++) {
             if(this.todoList[i].id === todoId) {
-                this.todoList[i].name = todo.name;
+                this.todoList[i].title = todo.title;
                 this.todoList[i].status = todo.status;
                 return this.todoList[i];
             }

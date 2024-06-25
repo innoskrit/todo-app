@@ -2,6 +2,6 @@ import { TodoStatus } from "./TodoStatus";
 
 export interface Todo {
     id: string;
-    name: string;
+    title: string;
     status: TodoStatus;
 }

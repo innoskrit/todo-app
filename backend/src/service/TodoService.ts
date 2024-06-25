@@ -11,10 +11,10 @@ class TodoService {
         this.todoRepository = todoRepository;
     }
 
-    public createTodo(todo: Todo): Todo {
+    async createTodo(todo: Todo): Promise<Todo> {
         todo.id = uuid();
         todo.status = TodoStatus.TODO;
-        return this.todoRepository.createTodo(todo);
+        return await this.todoRepository.createTodo(todo);
     }
 
     async getTodos(): Promise<Todo[]> {
@@ -25,12 +25,12 @@ class TodoService {
         return await this.todoRepository.getTodo(todoId);
     }
 
-    public updateTodo(todoId: string, todo: Todo): Todo | null {
-        return this.todoRepository.updateTodo(todoId, todo);
+    async updateTodo(todoId: string, todo: Todo): Promise<Todo> {
+        return await this.todoRepository.updateTodo(todoId, todo);
     }
 
-    public deleteTodo(todoId: string): Todo | null {
-        return this.todoRepository.deleteTodo(todoId);;
+    async deleteTodo(todoId: string): Promise<number> {
+        return await this.todoRepository.deleteTodo(todoId);;
     }
 }
 

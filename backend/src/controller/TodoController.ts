@@ -4,11 +4,11 @@ import TodoDBRepository from '../respository/TodoDBRepository';
 
 const todoService = new TodoService(new TodoDBRepository());
 
-export const createTodo = (req: express.Request, res: express.Response) => {
-    if(req.body.name === "") {
+export const createTodo = async (req: express.Request, res: express.Response) => {
+    if(req.body.title === "") {
         res.status(400).json({error: "Name cannot be empty."});
     }
-    const todo = todoService.createTodo(req.body);
+    const todo = await todoService.createTodo(req.body);
     if(todo === undefined || todo === null) {
         res.status(500).json({message: "Todo couldn't be created.", data: null});
     }
@@ -32,20 +32,20 @@ export const getTodo = async (req: express.Request, res: express.Response) => {
     res.status(200).json({message: "Todo fetched successfully.", data: todo});
 }
 
-export const updateTodo = (req: express.Request, res: express.Response) => {
+export const updateTodo = async (req: express.Request, res: express.Response) => {
     const todoId = req.params["id"];
-    const updatedTodo = todoService.updateTodo(todoId, req.body);
-    if(updatedTodo === null) {
-        res.status(404).json({error: "No Todo found"});
+    const updatedTodo = await todoService.updateTodo(todoId, req.body);
+    if(updatedTodo === undefined || updatedTodo === null) {
+        res.status(404).json({error: "No Todo updated"});
     }
     res.status(200).json({message: "Todo updated successfully.", data: updatedTodo});
 }
 
-export const deleteTodo = (req: express.Request, res: express.Response) => {
+export const deleteTodo = async (req: express.Request, res: express.Response) => {
     const todoId = req.params["id"];
-    const deletedTodo = todoService.deleteTodo(todoId);
-    if(deletedTodo === null) {
-        res.status(404).json({error: "No Todo found"});
+    const deletedTodo = await todoService.deleteTodo(todoId);
+    if(deletedTodo === 0) {
+        res.status(404).json({error: "No Todo deleted."});
     }
-    res.status(200).json({message: "Todo deleted successfully.", data: deletedTodo});
+    res.status(200).json({message: "Todo deleted successfully."});
 }
