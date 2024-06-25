@@ -3,7 +3,7 @@ import './App.css';
 import TodoHeader from './components/TodoHeader';
 import TodoItem from './components/TodoItem';
 import './style.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddTodo from './components/AddTodo';
 
 function App() {
@@ -14,32 +14,25 @@ function App() {
     DONE: 2,
   })
 
-  const TodoList = {
-    1 : {
-      title: "Wake Up",
-      status: Status.TODO,
-    },
-    2 : {
-      title: "Exercise",
-      status: Status.TODO,
-    },
-    3 : {
-      title: "Breakfast",
-      status: Status.TODO,
-    },
-    4 : {
-      title: "Go to Office",
-      status: Status.TODO,
-    },
-    5 : {
-      title: "Lunch",
-      status: Status.TODO,
-    }
-  }
-
-  const [todoList, setTodoList] = useState(TodoList);
-
+  const [todoList, setTodoList] = useState({});
   const [isAddTodoEnabled, setIsAddTodoEnabled] = useState(false);
+
+  useEffect(() => {
+    fetch('http://localhost:3001/todos/')
+    .then(response => response.json())
+    .then(data => {
+      console.log("Response Data: ", data.data);
+      const formattedData = {};
+      data.data.forEach(todo => {
+        formattedData[todo.id] = {
+          title : todo.title,
+          status : todo.status,
+        };
+      })
+      setTodoList(formattedData);
+    })
+    .catch(error => console.error('error fetching todos: ' + error.message));
+  }, []);
 
   const handleAddTodoItem = () => {
     setIsAddTodoEnabled(true);
