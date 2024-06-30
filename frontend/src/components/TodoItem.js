@@ -34,6 +34,8 @@ const TodoItem = (props) => {
 
     const handleSaveIcon = () => {
         setIsEditingEnabled(false);
+        console.log(props.id);
+        props.onUpdateTodo(props.id, { title: editedText, status: status });
     }
 
     const handleEditIcon = () => {
@@ -43,6 +45,7 @@ const TodoItem = (props) => {
     const handleStatusChange = () => {
         const newStatus = (status + 1) % 3;
         setStatus(newStatus);
+        props.onUpdateTodo(props.id, { title: editedText, status: newStatus });
     }
 
     const handleDeleteIcon = () => {
